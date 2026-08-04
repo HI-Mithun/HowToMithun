@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths = (async ({ paginate }) => {
+	const allPosts = await getCollection('blog', ({ data }) => data.draft !== true);
+	const sortedPosts = allPosts.sort(
+		(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+	);
+	return paginate(sortedPosts, { pageSize: 6 });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+---
+
+<BaseLayout title="Blog | My Website">
+	<main class="max-w-2xl mx-auto px-4 py-16">
+		<h1 class="text-3xl font-bold mb-8">Blog</h1>
+
+		<ul class="space-y-6">
+			{page.data.map((post) => (
+				<li>
+					<a href={`/blog/${post.id}/`} class="block group">
+						<h2 class="text-xl font-semibold group-hover:text-blue-600">
+							{post.data.title}
+						</h2>
+						<p class="text-sm text-gray-500">
+							{post.data.pubDate.toLocaleDateString('en-US', {
+								year: 'numeric',
+								month: 'long',
+								day: 'numeric',
+							})}
+						</p>
+						<p class="text-gray-600 mt-1">{post.data.description}</p>
+					</a>
+				</li>
+			))}
+		</ul>
+
+		<nav class="flex justify-between mt-12 pt-6 border-t border-gray-200">
+			{page.url.prev ? (
+				<a href={page.url.prev} class="text-blue-600 hover:underline">&larr; Newer posts</a>
+			) : <span />}
+			{page.url.next ? (
+				<a href={page.url.next} class="text-blue-600 hover:underline">Older posts &rarr;</a>
+			) : <span />}
+		</nav>
+	</main>
+</BaseLayout>

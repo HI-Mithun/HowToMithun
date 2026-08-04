@@ -1,20 +1,25 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { calculateReadingTime } from '../../utils/readingTime';
+import { getRelatedPosts } from '../../utils/relatedPosts';
 
 export async function getStaticPaths() {
 	const posts = await getCollection('blog', ({ data }) => data.draft !== true);
 	return posts.map((post) => ({
 		params: { id: post.id },
-		props: { post },
+		props: { post, allPosts: posts },
 	}));
 }
 
-const { post } = Astro.props;
+const { post, allPosts } = Astro.props;
 const { Content } = await render(post);
+
+const readingMinutes = calculateReadingTime(post.body ?? '');
+const related = getRelatedPosts(post, allPosts);
 ---
 
-<BaseLayout title={`${post.data.title} | How To Mithun`} description={post.data.description}>
+<BaseLayout title={`${post.data.title} | My Website`} description={post.data.description}>
 	<article class="max-w-2xl mx-auto px-4 py-16">
 		<a href="/blog" class="text-sm text-blue-600 hover:underline">&larr; Back to Blog</a>
 
@@ -26,6 +31,7 @@ const { Content } = await render(post);
 				month: 'long',
 				day: 'numeric',
 			})}
+			<span> · {readingMinutes} min read</span>
 			{post.data.updatedDate && (
 				<span> · Updated {post.data.updatedDate.toLocaleDateString('en-US', {
 					year: 'numeric',
@@ -46,6 +52,21 @@ const { Content } = await render(post);
 						#{tag}
 					</span>
 				))}
+			</div>
+		)}
+
+		{related.length > 0 && (
+			<div class="mt-12 pt-8 border-t border-gray-200">
+				<h2 class="text-lg font-semibold mb-4">Related Posts</h2>
+				<ul class="space-y-3">
+					{related.map((relatedPost) => (
+						<li>
+							<a href={`/blog/${relatedPost.id}/`} class="text-blue-600 hover:underline">
+								{relatedPost.data.title}
+							</a>
+						</li>
+					))}
+				</ul>
 			</div>
 		)}
 	</article>
