@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const contactLinks = [
+	{ label: 'Email', href: 'mailto:you@example.com', value: 'you@example.com' },
+	{ label: 'GitHub', href: 'https://github.com/yourusername', value: '@yourusername' },
+];
+---
+
+<BaseLayout title="Contact | My Website" description="Get in touch.">
+	<main class="max-w-2xl mx-auto px-4 py-16">
+		<h1 class="text-3xl font-bold mb-6">Contact</h1>
+		<p class="text-gray-600 mb-8">
+			Feel free to reach out — I'm happy to chat about projects, collaboration, or anything on the site.
+		</p>
+		<ul class="space-y-3">
+			{contactLinks.map((link) => (
+				<li>
+					<span class="text-sm text-gray-500">{link.label}:</span>{' '}
+					<a href={link.href} class="text-blue-600 hover:underline">{link.value}</a>
+				</li>
+			))}
+		</ul>
+	</main>
+</BaseLayout>
