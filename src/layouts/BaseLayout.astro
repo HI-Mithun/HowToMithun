@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 
 interface Props {
 	title: string;
@@ -18,6 +20,8 @@ const { title, description = 'Personal website, blog, and project showcase.' } =
 		<title>{title}</title>
 	</head>
 	<body class="bg-white text-gray-900">
+		<Header />
 		<slot />
+		<Footer />
 	</body>
 </html>

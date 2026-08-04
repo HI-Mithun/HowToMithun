@@ -1,15 +1,45 @@
 ---
-import '../styles/global.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const sections = [
+	{
+		title: 'Blog',
+		description: 'Writing on programming, machine learning, and whatever I\'m learning.',
+		href: '/blog',
+	},
+	{
+		title: 'Projects',
+		description: 'Things I\'ve built, from small experiments to full apps.',
+		href: '/projects',
+	},
+	{
+		title: 'Sketchbook',
+		description: 'A visual journal — drawings, animation experiments, and ideas.',
+		href: '/sketchbook',
+	},
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<title>How To Mithun</title>
-	</head>
-	<body>
-		<h1 class="text-4xl font-bold text-blue-600 underline">
-			Hello, Astro + Tailwind!
-		</h1>
-	</body>
-</html>
+<BaseLayout title="Home | How To Mithun">
+	<main class="max-w-4xl mx-auto px-4">
+		<section class="py-20 text-center">
+			<h1 class="text-4xl font-bold mb-4">Hi, I'm Hasan Imam Mithun</h1>
+			<p class="text-lg text-gray-600 max-w-xl mx-auto">
+				I'm a developer and lifelong learner. This is my digital home —
+				part portfolio, part notebook, part archive of things I'm building and thinking about.
+			</p>
+		</section>
+
+		<section class="grid gap-6 sm:grid-cols-3 pb-20">
+			{sections.map((section) => (
+				<a
+					href={section.href}
+					class="block p-6 border border-gray-200 rounded-lg hover:border-blue-600 transition-colors"
+				>
+					<h2 class="text-xl font-semibold mb-2">{section.title}</h2>
+					<p class="text-gray-600 text-sm">{section.description}</p>
+				</a>
+			))}
+		</section>
+	</main>
+</BaseLayout>
