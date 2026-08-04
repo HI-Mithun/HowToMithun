@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog', ({ data }) => data.draft !== true);
+const sortedPosts = allPosts.sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const postsByYear = sortedPosts.reduce((acc, post) => {
+	const year = post.data.pubDate.getFullYear();
+	if (!acc[year]) acc[year] = [];
+	acc[year].push(post);
+	return acc;
+}, {} as Record<number, typeof sortedPosts>);
+
+const years = Object.keys(postsByYear).map(Number).sort((a, b) => b - a);
+---
+
+<BaseLayout title="Archive | My Website" description="All posts, organized by year.">
+	<main class="max-w-2xl mx-auto px-4 py-16">
+		<h1 class="text-3xl font-bold mb-8">Archive</h1>
+
+		{years.map((year) => (
+			<section class="mb-10">
+				<h2 class="text-xl font-semibold mb-4 text-gray-500">{year}</h2>
+				<ul class="space-y-3">
+					{postsByYear[year].map((post) => (
+						<li>
+							<a href={`/blog/${post.id}/`} class="hover:text-blue-600">
+								{post.data.title}
+							</a>
+							<span class="text-sm text-gray-400 ml-2">
+								{post.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+							</span>
+						</li>
+					))}
+				</ul>
+			</section>
+		))}
+	</main>
+</BaseLayout>

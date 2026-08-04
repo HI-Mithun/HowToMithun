@@ -1,0 +1,14 @@
+---
+interface Props {
+	title: string;
+	description: string;
+}
+const { title, description } = Astro.props;
+---
+
+<main class="max-w-2xl mx-auto px-4 py-24 text-center">
+	<h1 class="text-3xl font-bold mb-4">{title}</h1>
+	<p class="text-text-muted dark:text-text-muted-dark mb-8">{description}</p>
+	<p class="text-sm text-text-muted dark:text-text-muted-dark">Content for this section is on its way.</p>
+	<a href="/" class="inline-block mt-6 text-accent dark:text-accent-dark hover:underline">&larr; Back to Home</a>
+</main>

@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog', ({ data }) => data.draft !== true);
+
+const allTags = [...new Set(allPosts.flatMap((post) => post.data.tags))].sort();
+---
+
+<BaseLayout title="Tags | My Website" description="Browse posts by tag.">
+	<main class="max-w-2xl mx-auto px-4 py-16">
+		<h1 class="text-3xl font-bold mb-8">Tags</h1>
+		<div class="flex flex-wrap gap-3">
+			{allTags.map((tag) => (
+				<a
+					href={`/tags/${tag}/`}
+					class="text-sm bg-surface dark:bg-surface-dark text-gray-700 px-3 py-1.5 rounded-full hover:bg-blue-100 hover:text-blue-700"
+				>
+					#{tag}
+				</a>
+			))}
+		</div>
+	</main>
+</BaseLayout>

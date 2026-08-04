@@ -21,11 +21,11 @@ const related = getRelatedPosts(post, allPosts);
 
 <BaseLayout title={`${post.data.title} | How To Mithun`} description={post.data.description}>
 	<article class="max-w-2xl mx-auto px-4 py-16">
-		<a href="/blog" class="text-sm text-blue-600 hover:underline">&larr; Back to Blog</a>
+		<a href="/blog" class="text-sm text-accent dark:text-accent-dark hover:underline">&larr; Back to Blog</a>
 
 		<h1 class="text-3xl font-bold mt-4 mb-2">{post.data.title}</h1>
 
-		<p class="text-sm text-gray-500 mb-8">
+		<p class="text-sm text-text-muted dark:text-text-muted-dark mb-8">
 			{post.data.pubDate.toLocaleDateString('en-US', {
 				year: 'numeric',
 				month: 'long',
@@ -48,7 +48,7 @@ const related = getRelatedPosts(post, allPosts);
 		{post.data.tags.length > 0 && (
 			<div class="mt-10 pt-6 border-t border-gray-200 flex gap-2 flex-wrap">
 				{post.data.tags.map((tag) => (
-					<span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+					<span class="text-xs bg-gray-100 text-text-muted dark:text-text-muted-dark px-2 py-1 rounded">
 						#{tag}
 					</span>
 				))}
@@ -56,7 +56,7 @@ const related = getRelatedPosts(post, allPosts);
 		)}
 
 		{related.length > 0 && (
-			<div class="mt-12 pt-8 border-t border-gray-200">
+			<div class="mt-12 pt-8 border-t border-border dark:border-border-dark">
 				<h2 class="text-lg font-semibold mb-4">Related Posts</h2>
 				<ul class="space-y-3">
 					{related.map((relatedPost) => (

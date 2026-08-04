@@ -24,7 +24,7 @@ const sections = [
 	<main class="max-w-4xl mx-auto px-4">
 		<section class="py-20 text-center">
 			<h1 class="text-4xl font-bold mb-4">Hi, I'm Hasan Imam Mithun</h1>
-			<p class="text-lg text-gray-600 max-w-xl mx-auto">
+			<p class="text-lg text-text-muted dark:text-text-muted-dark max-w-xl mx-auto">
 				I'm a developer and lifelong learner. This is my digital home —
 				part portfolio, part notebook, part archive of things I'm building and thinking about.
 			</p>
@@ -34,10 +34,10 @@ const sections = [
 			{sections.map((section) => (
 				<a
 					href={section.href}
-					class="block p-6 border border-gray-200 rounded-lg hover:border-blue-600 transition-colors"
+					class="block p-6 border border-border dark:border-border-dark rounded-lg hover:border-accent dark:hover:border-accent-dark transition-colors"
 				>
-					<h2 class="text-xl font-semibold mb-2">{section.title}</h2>
-					<p class="text-gray-600 text-sm">{section.description}</p>
+					<h2 class="text-xl font-semibold mb-2 text-text dark:text-text-dark">{section.title}</h2>
+					<p class="text-text-muted dark:text-text-muted-dark text-sm">{section.description}</p>
 				</a>
 			))}
 		</section>
