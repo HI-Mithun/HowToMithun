@@ -1,11 +1,11 @@
-// @ts-check
 import { defineConfig } from 'astro/config';
-
 import tailwindcss from '@tailwindcss/vite';
+import sitemap from '@astrojs/sitemap';
 
-// https://astro.build/config
 export default defineConfig({
-  vite: {
-    plugins: [tailwindcss()]
-  }
+	site: 'https://myname.netlify.app', // update this once you know your final URL
+	integrations: [sitemap()],
+	vite: {
+		plugins: [tailwindcss()],
+	},
 });
