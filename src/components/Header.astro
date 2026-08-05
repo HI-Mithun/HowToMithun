@@ -9,9 +9,22 @@ const navLinks = [
 	{ href: '/search', label: 'Search' },
 	{ href: '/contact', label: 'Contact' },
 ];
+
+const exploreLinks = [
+	{ href: '/programming', label: 'Programming' },
+	{ href: '/machine-learning', label: 'Machine Learning' },
+	{ href: '/game-guides', label: 'Game Guides' },
+	{ href: '/chess', label: 'Chess' },
+	{ href: '/sketchbook', label: 'Sketchbook' },
+	{ href: '/animation', label: 'Animation' },
+	{ href: '/teaching', label: 'Teaching' },
+	{ href: '/resume', label: 'Resume' },
+	{ href: '/tags', label: 'Tags' },
+	{ href: '/archive', label: 'Archive' },
+];
 ---
 
-<header class="border-b border-border dark:border-border-dark">
+<header class="border-b border-border dark:border-border-dark relative">
 	<nav class="max-w-4xl mx-auto flex items-center justify-between px-4 py-4">
 		<a href="/" class="font-bold text-lg text-text dark:text-text-dark">My Website</a>
 
@@ -25,7 +38,7 @@ const navLinks = [
 		</button>
 
 		<div class="hidden sm:flex items-center gap-6">
-			<ul class="flex gap-6">
+			<ul class="flex items-center gap-6">
 				{navLinks.map((link) => (
 					<li>
 						<a
@@ -36,24 +49,69 @@ const navLinks = [
 						</a>
 					</li>
 				))}
+				<li class="relative">
+					<button
+						id="explore-toggle"
+						aria-haspopup="true"
+						aria-expanded="false"
+						class="flex items-center gap-1 text-text-muted dark:text-text-muted-dark hover:text-accent dark:hover:text-accent-dark"
+					>
+						Explore
+						<span class="text-xs">▾</span>
+					</button>
+					<ul
+						id="explore-menu"
+						class="hidden absolute right-0 top-full mt-2 w-48 py-2 rounded-lg border border-border dark:border-border-dark bg-bg dark:bg-bg-dark shadow-lg"
+					>
+						{exploreLinks.map((link) => (
+							<li>
+								<a
+									href={link.href}
+									class="block px-4 py-2 text-sm text-text-muted dark:text-text-muted-dark hover:text-accent dark:hover:text-accent-dark hover:bg-surface dark:hover:bg-surface-dark"
+								>
+									{link.label}
+								</a>
+							</li>
+						))}
+					</ul>
+				</li>
 			</ul>
 			<ThemeToggle />
 		</div>
 	</nav>
 
-	<ul id="mobile-menu" class="hidden sm:hidden flex-col gap-1 px-4 pb-4">
-		{navLinks.map((link) => (
-			<li>
-				<a
-					href={link.href}
-					class="block py-2 text-text-muted dark:text-text-muted-dark hover:text-accent dark:hover:text-accent-dark"
-				>
-					{link.label}
-				</a>
-			</li>
-		))}
-		<li class="pt-2"><ThemeToggle /></li>
-	</ul>
+	<div id="mobile-menu" class="hidden sm:hidden flex-col gap-1 px-4 pb-4">
+		<ul class="flex flex-col gap-1">
+			{navLinks.map((link) => (
+				<li>
+					<a
+						href={link.href}
+						class="block py-2 text-text-muted dark:text-text-muted-dark hover:text-accent dark:hover:text-accent-dark"
+					>
+						{link.label}
+					</a>
+				</li>
+			))}
+		</ul>
+
+		<p class="pt-3 pb-1 text-xs uppercase tracking-wide text-text-muted dark:text-text-muted-dark">
+			Explore
+		</p>
+		<ul class="flex flex-col gap-1">
+			{exploreLinks.map((link) => (
+				<li>
+					<a
+						href={link.href}
+						class="block py-2 text-text-muted dark:text-text-muted-dark hover:text-accent dark:hover:text-accent-dark"
+					>
+						{link.label}
+					</a>
+				</li>
+			))}
+		</ul>
+
+		<div class="pt-3"><ThemeToggle /></div>
+	</div>
 </header>
 
 <script>
@@ -64,5 +122,23 @@ const navLinks = [
 		mobileMenu?.classList.toggle('hidden', isOpen);
 		mobileMenu?.classList.toggle('flex', !isOpen);
 		menuToggle?.setAttribute('aria-expanded', String(!isOpen));
+	});
+
+	const exploreToggle = document.getElementById('explore-toggle');
+	const exploreMenu = document.getElementById('explore-menu');
+
+	exploreToggle?.addEventListener('click', (e) => {
+		e.stopPropagation();
+		const isOpen = !exploreMenu?.classList.contains('hidden');
+		exploreMenu?.classList.toggle('hidden', isOpen);
+		exploreToggle?.setAttribute('aria-expanded', String(!isOpen));
+	});
+
+	// Close the Explore dropdown when clicking anywhere else on the page.
+	document.addEventListener('click', (e) => {
+		if (!exploreMenu?.classList.contains('hidden') && !exploreMenu?.contains(e.target as Node)) {
+			exploreMenu?.classList.add('hidden');
+			exploreToggle?.setAttribute('aria-expanded', 'false');
+		}
 	});
 </script>
