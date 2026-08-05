@@ -18,7 +18,7 @@ export async function getStaticPaths() {
 const { tag, posts } = Astro.props;
 ---
 
-<BaseLayout title={`#${tag} | My Website`}>
+<BaseLayout title={`#${tag} | How To Mithun`}>
 	<main class="max-w-2xl mx-auto px-4 py-16">
 		<a href="/tags" class="text-sm text-accent dark:text-accent-dark hover:underline">&larr; All Tags</a>
 		<h1 class="text-3xl font-bold mt-4 mb-8">Posts tagged #{tag}</h1>
