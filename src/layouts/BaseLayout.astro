@@ -42,7 +42,7 @@ const ogImageURL = new URL(image, Astro.site);
 
 		<script is:inline>
 			const stored = localStorage.getItem('theme');
-			const theme = stored || 'dark';
+			const theme = stored || 'light';
 			document.documentElement.classList.toggle('dark', theme === 'dark');
 		</script>
 	</head>
