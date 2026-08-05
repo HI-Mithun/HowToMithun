@@ -3,7 +3,7 @@ import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-	site: 'https://myname.netlify.app', // update this once you know your final URL
+	site: 'https://howtomithun.netlify.app/', // update this once you know your final URL
 	integrations: [sitemap()],
 	vite: {
 		plugins: [tailwindcss()],
