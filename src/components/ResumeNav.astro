@@ -1,0 +1,53 @@
+---
+interface Section {
+	id: string;
+	label: string;
+}
+interface Props {
+	sections: Section[];
+}
+const { sections } = Astro.props;
+---
+
+<nav aria-label="Resume sections" class="hidden lg:block sticky top-24 self-start w-40 shrink-0">
+	<ul class="space-y-2 border-l-2 border-border dark:border-border-dark pl-4">
+		{sections.map((s) => (
+			<li>
+				<a
+					href={`#${s.id}`}
+					data-nav-link={s.id}
+					class="block text-sm text-text-muted dark:text-text-muted-dark hover:text-accent dark:hover:text-accent-dark transition-colors"
+				>
+					{s.label}
+				</a>
+			</li>
+		))}
+	</ul>
+</nav>
+
+<script>
+	const links = document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]');
+	const sections = Array.from(links)
+		.map((link) => document.getElementById(link.dataset.navLink!))
+		.filter((el): el is HTMLElement => el !== null);
+
+	const setActive = (id: string) => {
+		links.forEach((link) => {
+			const isActive = link.dataset.navLink === id;
+			link.classList.toggle('text-accent', isActive);
+			link.classList.toggle('dark:text-accent-dark', isActive);
+			link.classList.toggle('font-medium', isActive);
+		});
+	};
+
+	const observer = new IntersectionObserver(
+		(entries) => {
+			entries.forEach((entry) => {
+				if (entry.isIntersecting) setActive(entry.target.id);
+			});
+		},
+		{ rootMargin: '-20% 0px -70% 0px' }
+	);
+
+	sections.forEach((section) => observer.observe(section));
+</script>

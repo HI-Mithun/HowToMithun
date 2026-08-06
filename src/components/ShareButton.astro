@@ -1,0 +1,56 @@
+---
+---
+
+<div class="relative inline-block">
+	<button
+		id="share-toggle"
+		aria-haspopup="true"
+		aria-expanded="false"
+		class="flex items-center gap-2 text-sm px-4 py-2 rounded-lg border border-border dark:border-border-dark hover:bg-surface dark:hover:bg-surface-dark transition-colors"
+	>
+		Share
+		<span class="text-xs">▾</span>
+	</button>
+
+	<ul
+		id="share-menu"
+		class="hidden absolute right-0 top-full mt-2 w-48 py-2 rounded-lg border border-border dark:border-border-dark bg-bg dark:bg-bg-dark shadow-lg z-10"
+	>
+		<li>
+			<button
+				id="copy-link"
+				class="w-full text-left px-4 py-2 text-sm text-text-muted dark:text-text-muted-dark hover:text-accent dark:hover:text-accent-dark hover:bg-surface dark:hover:bg-surface-dark"
+			>
+				Copy link
+			</button>
+		</li>
+	</ul>
+</div>
+
+<script>
+	const toggle = document.getElementById('share-toggle');
+	const menu = document.getElementById('share-menu');
+	const copyBtn = document.getElementById('copy-link');
+
+	toggle?.addEventListener('click', (e) => {
+		e.stopPropagation();
+		const isOpen = !menu?.classList.contains('hidden');
+		menu?.classList.toggle('hidden', isOpen);
+		toggle?.setAttribute('aria-expanded', String(!isOpen));
+	});
+
+	document.addEventListener('click', (e) => {
+		if (!menu?.classList.contains('hidden') && !menu?.contains(e.target as Node) && e.target !== toggle) {
+			menu?.classList.add('hidden');
+			toggle?.setAttribute('aria-expanded', 'false');
+		}
+	});
+
+	copyBtn?.addEventListener('click', async () => {
+		await navigator.clipboard.writeText(window.location.href);
+		if (copyBtn) copyBtn.textContent = 'Copied!';
+		setTimeout(() => {
+			if (copyBtn) copyBtn.textContent = 'Copy link';
+		}, 1500);
+	});
+</script>
