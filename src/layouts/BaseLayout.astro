@@ -45,6 +45,12 @@ const ogImageURL = new URL(image, Astro.site);
 			const theme = stored || 'light';
 			document.documentElement.classList.toggle('dark', theme === 'dark');
 		</script>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+	href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap"
+	rel="stylesheet"
+/>
 	</head>
 	<body class="bg-bg text-text dark:bg-bg-dark dark:text-text-dark transition-colors duration-200">
 		<Header />

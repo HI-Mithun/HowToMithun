@@ -9,15 +9,21 @@ interface Props {
 const { sections } = Astro.props;
 ---
 
-<nav aria-label="Resume sections" class="hidden lg:block sticky top-24 self-start w-40 shrink-0">
-	<ul class="space-y-2 border-l-2 border-border dark:border-border-dark pl-4">
-		{sections.map((s) => (
+<nav aria-label="Resume sections" class="hidden lg:block sticky top-24 self-start w-44 shrink-0">
+	<p class="font-mono text-xs uppercase tracking-wider text-text-muted dark:text-text-muted-dark mb-4">
+		Index
+	</p>
+	<ul class="space-y-3 border-l-2 border-border dark:border-border-dark">
+		{sections.map((s, i) => (
 			<li>
 				<a
 					href={`#${s.id}`}
 					data-nav-link={s.id}
-					class="block text-sm text-text-muted dark:text-text-muted-dark hover:text-accent dark:hover:text-accent-dark transition-colors"
+					class="flex items-baseline gap-2 pl-4 -ml-0.5 border-l-2 border-transparent text-sm text-text-muted dark:text-text-muted-dark hover:text-text dark:hover:text-text-dark transition-colors"
 				>
+					<span class="font-mono text-xs text-text-muted/60 dark:text-text-muted-dark/60">
+						{String(i + 1).padStart(2, '0')}
+					</span>
 					{s.label}
 				</a>
 			</li>
@@ -32,13 +38,15 @@ const { sections } = Astro.props;
 		.filter((el): el is HTMLElement => el !== null);
 
 	const setActive = (id: string) => {
-		links.forEach((link) => {
-			const isActive = link.dataset.navLink === id;
-			link.classList.toggle('text-accent', isActive);
-			link.classList.toggle('dark:text-accent-dark', isActive);
-			link.classList.toggle('font-medium', isActive);
-		});
-	};
+	links.forEach((link) => {
+		const isActive = link.dataset.navLink === id;
+		link.classList.toggle('text-accent', isActive);
+		link.classList.toggle('dark:text-accent-dark', isActive);
+		link.classList.toggle('font-medium', isActive);
+		link.classList.toggle('border-accent', isActive);
+		link.classList.toggle('dark:border-accent-dark', isActive);
+	});
+};
 
 	const observer = new IntersectionObserver(
 		(entries) => {

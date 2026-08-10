@@ -5,6 +5,8 @@ export interface PersonalInfo {
 	email: string;
 	phone: string;
 	location: string;
+	photo?: string; // Optional: URL or path to a photo
+	tagline?: string;
 	links: {
 		github?: string;
 		linkedin?: string;
@@ -61,11 +63,15 @@ export interface HobbyEntry {
 	links?: { label: string; href: string }[];
 }
 
+
+
 export const personalInfo: PersonalInfo = {
 	name: 'Md. Hasan Imam Mithun', // TODO: confirm full display name
 	email: 'hi.mithun004@gmail.com',
 	phone: '+88 01822-612298',
 	location: 'Dhaka, Bangladesh',
+	photo: '/images/mithun-profile.jpg', // Optional: path to a photo
+	tagline: 'Computer Science Undergraduate · Private Tutor · Chess Competitor',
 	links: {
 		// github: '',
 		// linkedin: '',
