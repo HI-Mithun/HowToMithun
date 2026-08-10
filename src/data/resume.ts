@@ -38,6 +38,7 @@ export interface ProjectEntry {
 	endDate: string | 'Present';
 	role?: string;
 	slug?: string;
+	highlights?: string[];
 }
 
 export interface SkillGroup {
@@ -70,12 +71,12 @@ export const personalInfo: PersonalInfo = {
 	email: 'hi.mithun004@gmail.com',
 	phone: '+88 01822-612298',
 	location: 'Dhaka, Bangladesh',
-	photo: '/images/mithun-profile.jpg', // Optional: path to a photo
+	photo: '/images/mithun-profile.jpg',
 	tagline: 'Computer Science Undergraduate · Private Tutor · Chess Competitor',
 	links: {
-		// github: '',
-		// linkedin: '',
-		// chessCom: '',
+		github: 'https://github.com/HI-Mithun',
+		linkedin: 'https://www.linkedin.com/in/hasan-imam-mithun/',
+		chessCom: 'https://www.chess.com/member/hi_mithun',
 	},
 };
 
@@ -84,6 +85,17 @@ export const about: string =
 
 export const experience: ExperienceEntry[] = [
 	{
+		organization: 'Auleek Limited',
+		role: 'PC Gameplay Operator',
+		startDate: '2026-07-11',
+		endDate: 'Present',
+		responsibilities: [
+			'Annotated gameplay data following detailed project guidelines',
+			'Maintained high annotation quality through careful observation and consistency',
+			'Maintained Identified gameplay events and documented them accurately',
+		],
+	},
+	{
 		organization: 'Self-Employed',
 		role: 'Private Tutor (Mathematics, English, ICT)',
 		startDate: '2021-01-01',
@@ -91,6 +103,7 @@ export const experience: ExperienceEntry[] = [
 		responsibilities: [
 			'Taught mathematics and programming fundamentals to high school and college students',
 			'Currently teaching English',
+			'Responsible for writing and preparing teaching materials',
 		],
 	},
 	{
@@ -116,13 +129,15 @@ export const experience: ExperienceEntry[] = [
 			'Worked with editors and translators',
 		],
 	},
-	// Neurone Onuraunon (Math Club, Vice President) — pending dates from Mithun.
 	{
 		organization: 'Neurone Onuraunon, An Independent Math Club',
 		role: 'Vice President',
 		startDate: '2024-07-24',
 		endDate: 'Present',
-		responsibilities: ['Organized academic events and mentored students in problem-solving'],
+		responsibilities: [
+			'Organized academic events',
+			'Mentored students in problem-solving',
+		],
 	},
 ];
 
@@ -148,25 +163,57 @@ export const education: EducationEntry[] = [
 		grade: '4.32/5.00',
 		startDate: '2015-01-01',
 		endDate: '2017-03-31',
+		
 	},
 ];
 
 export const projects: ProjectEntry[] = [
 	{
+		title: 'Personal Blog Website (Ongoing Personal Project)',
+		role: 'Developer & Designer',
+		startDate: '2026-08-03',
+		endDate: 'Present',
+		highlights: [
+			'Wrote original articles and essays on technology, everyday observations, and personal experiences',
+			'Designed content to engage readers through clear storytelling and relatable ideas',
+			'Organized a portfolio featuring blogs, creative writing, programming, and personal projects',
+			'ndependently managed content planning, editing, and presentation'
+		],
+	},
+	{
 		title: 'Health Hub – Smart Healthcare Platform',
 		startDate: '2025-08-01',
 		endDate: '2026-02-28',
+		highlights: [
+			'Investigated existing automated healthcare solutions, symptom-based disease prediction systems, and digital disease surveillance platforms to understand current research trends and implementation challenges',
+			'Performed comparative analysis of multiple machine learning models to evaluate prediction accuracy and model suitability',
+			'Proposed and implemented an integrated healthcare platform combining disease prediction with hospital recommendation',
+			'Prepared technical documentation and presented research findings as part of the undergraduate project',
+		],
+
 	},
 	{
 		title: 'Facial Expression Recognition using CNN (FER2013)',
 		startDate: '2025-01-01',
 		endDate: '2025-05-01',
+		highlights: [
+			'Trained convolutional neural networks for facial emotion recognition using the FER2013 dataset',
+			'Applied preprocessing, normalization, and data augmentation techniques to improve model generalization',
+			'Implemented model evaluation metrics to assess performance and accuracy',
+			'Documented the research process and results for academic presentation',
+		],
 	},
 	{
 		title: 'Lightweight PDF Reader',
 		role: 'Developer',
 		startDate: '2025-06-01',
 		endDate: '2025-06-20',
+		highlights: [
+			'Developed a lightweight PDF reader application focused on fast document loading and minimal resource usage',
+			'Implemented core features including PDF viewing, page navigation, zoom controls, and document management',
+			'Designed a simple and user-friendly interface to improve reading experience',
+			'Implemented a dictionary feature right inside the reader',
+		]
 	},
 ];
 
@@ -192,6 +239,9 @@ export const skills: SkillGroup[] = [
 export const languages: LanguageEntry[] = [
 	{ name: 'Bangla', fluency: 'Native' },
 	{ name: 'English', fluency: 'Fluent' },
+	{ name: 'Hindi', fluency: 'Conversational (Cannot Read)' },
+	{ name: 'Arabic', fluency: 'Basic (Can Read)' },
+	{ name: 'Spanish', fluency: 'Basic (I Can Say Hi! And Name a Few Things)' },
 ];
 
 export const awards: AwardEntry[] = [
