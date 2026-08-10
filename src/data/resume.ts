@@ -177,7 +177,7 @@ export const projects: ProjectEntry[] = [
 			'Wrote original articles and essays on technology, everyday observations, and personal experiences',
 			'Designed content to engage readers through clear storytelling and relatable ideas',
 			'Organized a portfolio featuring blogs, creative writing, programming, and personal projects',
-			'ndependently managed content planning, editing, and presentation'
+			'Independently managed content planning, editing, and presentation'
 		],
 	},
 	{
