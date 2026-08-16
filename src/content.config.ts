@@ -8,6 +8,7 @@ const blogCollection = defineCollection({
 		description: z.string(),
 		pubDate: z.coerce.date(),
 		updatedDate: z.date().optional(),
+		author: z.string().default('Hasan Imam Mithun'),
 		tags: z.array(z.string()).default([]),
 		category: z.string().default('Uncategorized'),
 		featuredImage: z.string().optional(),
