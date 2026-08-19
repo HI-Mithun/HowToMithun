@@ -1,0 +1,89 @@
+---
+import { getCollection } from 'astro:content';
+import { Image, getImage } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getRelatedSketches } from '../../utils/relatedSketches';
+import { titleFromId } from '../../utils/formatTitle';
+
+export async function getStaticPaths() {
+	const sketches = await getCollection('sketches');
+	return sketches.map((sketch) => ({
+		params: { id: sketch.id },
+		props: { sketch, allSketches: sketches },
+	}));
+}
+
+const { sketch, allSketches } = Astro.props;
+const { date, medium, description, image } = sketch.data;
+const title = sketch.data.title ?? titleFromId(sketch.id);
+const related = getRelatedSketches(sketch, allSketches, allSketches.length);
+const downloadImage = await getImage({ src: image, format: 'jpg', quality: 90 });
+
+const formattedDate = date
+	? date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+	: null;
+---
+
+<BaseLayout title={`${title} | Sketchbook | How To Mithun`} description={description ?? title}>
+	<main class="max-w-7xl mx-auto px-4 py-16">
+		<a href="/sketchbook" class="text-sm text-accent dark:text-accent-dark hover:underline mb-8 inline-block">
+			&larr; Back to Sketchbook
+		</a>
+
+		<div class="lg:flex lg:gap-8 lg:items-start">
+			<!-- Left: anchored artwork panel, internally scrollable if tall -->
+			<div class="lg:w-[420px] lg:shrink-0 lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:pr-2 mb-12 lg:mb-0">
+				<Image
+					src={image}
+					alt={title}
+					class="w-full h-auto max-h-[50vh] object-contain rounded-2xl border border-border dark:border-border-dark mb-6 bg-surface dark:bg-surface-dark"
+				/>
+
+				<h1 class="text-2xl font-bold mb-2">{title}</h1>
+				{(formattedDate || medium) && (
+					<p class="text-sm text-text-muted dark:text-text-muted-dark mb-4">
+						{formattedDate}{formattedDate && medium && ' · '}{medium}
+					</p>
+				)}
+
+				{description && (
+					<p class="text-text-muted dark:text-text-muted-dark leading-relaxed mb-6">
+						{description}
+					</p>
+				)}
+				<a
+				
+					href={downloadImage.src}
+					download={`${sketch.id}.jpg`}
+					class="inline-flex items-center gap-2 text-sm px-5 py-2.5 rounded-full border border-border dark:border-border-dark hover:bg-surface dark:hover:bg-surface-dark transition-colors"
+				>
+					Download Image
+				</a>
+			</div>
+
+			<!-- Right: related sketches only -->
+			<div class="flex-1 min-w-0">
+				{related.length > 0 ? (
+					<div class="columns-2 sm:columns-3 gap-3">
+						{related.map((s) => (
+							<a
+								href={`/sketchbook/${s.id}`}
+								class="block mb-3 break-inside-avoid rounded-2xl overflow-hidden border border-border dark:border-border-dark"
+							>
+								<Image
+									src={s.data.image}
+									alt={s.data.title ?? titleFromId(s.id)}
+									class="w-full h-auto"
+								/>
+							</a>
+						))}
+					</div>
+				) : (
+					<p class="text-sm text-text-muted dark:text-text-muted-dark">
+						No related sketches yet — add matching tags or a category to connect this piece with others.
+					</p>
+				)}
+			</div>
+		</div>
+	</main>
+</BaseLayout>

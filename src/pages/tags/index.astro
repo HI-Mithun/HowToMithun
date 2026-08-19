@@ -7,7 +7,7 @@ const allPosts = await getCollection('blog', ({ data }) => data.draft !== true);
 const allTags = [...new Set(allPosts.flatMap((post) => post.data.tags))].sort();
 ---
 
-<BaseLayout title="Tags | My Website" description="Browse posts by tag.">
+<BaseLayout title="Tags | How To Mithun" description="Browse posts by tag.">
 	<main class="max-w-2xl mx-auto px-4 py-16">
 		<h1 class="text-3xl font-bold mb-8">Tags</h1>
 		<div class="flex flex-wrap gap-3">

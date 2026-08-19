@@ -1,10 +1,29 @@
 ---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ComingSoonPage from '../components/ComingSoonPage.astro';
+import { titleFromId } from '../utils/formatTitle';
+
+const sketches = await getCollection('sketches');
 ---
-<BaseLayout title="Sketchbook | How To Mithun">
-	<ComingSoonPage
-		title="Sketchbook"
-		description="A visual journal of drawings and sketches."
-	/>
+
+<BaseLayout title="Sketchbook | How To Mithun" description="A visual journal of drawings and sketches.">
+	<main class="max-w-6xl mx-auto px-4 py-16">
+		<h1 class="text-3xl font-bold mb-8">Sketchbook</h1>
+
+		<div class="columns-2 sm:columns-3 lg:columns-4 gap-4">
+			{sketches.map((sketch) => (
+				<a
+					href={`/sketchbook/${sketch.id}`}
+					class="block mb-4 break-inside-avoid rounded-lg overflow-hidden border border-border dark:border-border-dark"
+				>
+					<Image
+						src={sketch.data.image}
+						alt={sketch.data.title ?? titleFromId(sketch.id)}
+						class="w-full h-auto"
+					/>
+				</a>
+			))}
+		</div>
+	</main>
 </BaseLayout>

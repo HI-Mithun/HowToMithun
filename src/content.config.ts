@@ -16,6 +16,23 @@ const blogCollection = defineCollection({
 	}),
 });
 
+const emptyToUndefined = (v: unknown) => (v === '' ? undefined : v);
+
+const sketchesCollection = defineCollection({
+	loader: glob({ pattern: '**/*.md', base: './src/content/sketches' }),
+	schema: ({ image }) =>
+		z.object({
+			title: z.preprocess(emptyToUndefined, z.string().optional()),
+			date: z.preprocess(emptyToUndefined, z.coerce.date().optional()),
+			medium: z.preprocess(emptyToUndefined, z.string().default('Digital')),
+			description: z.string().optional(),
+			image: image(),
+			category: z.string().optional(),
+			tags: z.array(z.string()).default([]),
+		}),
+});
+
 export const collections = {
 	blog: blogCollection,
+	sketches: sketchesCollection,
 };
