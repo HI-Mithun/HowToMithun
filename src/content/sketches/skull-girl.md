@@ -1,8 +1,8 @@
 ---
-title: ""
-date: ""
+title: "Skull Girl"
+date: 2026-08-19
 medium: ""
 description: ""
 image: "./skull-girl.jpg"
-tags: []
+tags: ["skull girl"]
 ---

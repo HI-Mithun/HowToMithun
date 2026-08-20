@@ -1,8 +1,8 @@
 ---
-title: ""
-date: ""
+title: "Crazy Scientist"
+date: 2026-08-19
 medium: ""
 description: ""
 image: "./crazy-scientist.jpg"
-tags: []
+tags: ["crazy scientist"]
 ---

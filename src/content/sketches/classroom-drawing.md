@@ -1,8 +1,8 @@
 ---
-title: ""
-date: ""
+title: "Classroom Drawing"
+date: 2026-08-19
 medium: ""
 description: ""
 image: "./classroom-drawing.jpg"
-tags: []
+tags: ["classroom drawing"]
 ---
