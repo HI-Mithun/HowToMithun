@@ -1,8 +1,8 @@
 ---
-title: ""
-date: ""
-medium: ""
-description: ""
+title: "Arabic Calligraphy"
+date: 2024-10-30
+medium: "Pen on Paper"
+description: "Arabic Calligraphy"
 image: "./arabic-calligraphy3.jpg"
-tags: []
+tags: ["calligraphy", "arabic"]
 ---

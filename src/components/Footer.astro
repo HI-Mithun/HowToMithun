@@ -1,9 +1,66 @@
 ---
+import { navLinks } from '../data/navigation';
+import { personalInfo } from '../data/resume';
+
 const year = new Date().getFullYear();
+
+const socialLabels: Record<string, string> = {
+	github: 'GitHub',
+	linkedin: 'LinkedIn',
+	chessCom: 'Chess.com',
+};
+
+const socialLinks = Object.entries(personalInfo.links)
+	.filter(([, url]) => !!url)
+	.map(([key, url]) => ({
+		label: socialLabels[key] ?? key.charAt(0).toUpperCase() + key.slice(1),
+		url: url as string,
+	}));
 ---
 
 <footer class="border-t border-border dark:border-border-dark mt-16">
-	<div class="max-w-4xl mx-auto px-4 py-8 text-sm text-text-muted dark:text-text-muted-dark text-center">
-		<p>&copy; {year} My Website. Built with Astro & Tailwind.</p>
+	<div class="max-w-4xl mx-auto px-4 py-10">
+		<div class="flex flex-wrap items-start justify-between gap-8">
+			<div>
+				<p class="font-semibold text-text dark:text-text-dark mb-1">{personalInfo.name}</p>
+				<p class="text-sm text-text-muted dark:text-text-muted-dark">{personalInfo.location}</p>
+			</div>
+
+			<nav aria-label="Footer navigation">
+				<ul class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+					{navLinks.map((link) => (
+						<li>
+							<a
+								href={link.href}
+								class="text-text-muted dark:text-text-muted-dark hover:text-accent dark:hover:text-accent-dark"
+							>
+								{link.label}
+							</a>
+						</li>
+					))}
+				</ul>
+			</nav>
+
+			{socialLinks.length > 0 && (
+				<ul class="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+					{socialLinks.map((social) => (
+						<li>
+							<a
+								href={social.url}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="text-text-muted dark:text-text-muted-dark hover:text-accent dark:hover:text-accent-dark"
+							>
+								{social.label}
+							</a>
+						</li>
+					))}
+				</ul>
+			)}
+		</div>
+
+		<p class="text-xs text-text-muted dark:text-text-muted-dark mt-8">
+			&copy; {year} {personalInfo.name}. Built with Astro & Tailwind.
+		</p>
 	</div>
 </footer>
