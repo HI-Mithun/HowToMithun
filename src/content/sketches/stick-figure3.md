@@ -1,6 +1,6 @@
 ---
 title: "Stick Figure"
-date: 2026-08-19
+date: 2024-01-05
 medium: ""
 description: ""
 image: "./stick-figure3.jpg"

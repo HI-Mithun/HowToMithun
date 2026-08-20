@@ -1,6 +1,6 @@
 ---
 title: "Popeye"
-date: 2026-08-19
+date: 2019-06-12
 medium: ""
 description: ""
 image: "./popeye.jpg"

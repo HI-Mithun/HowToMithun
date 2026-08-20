@@ -1,6 +1,6 @@
 ---
 title: "Baby Elephant"
-date: 2026-08-19
+date: 2019-09-11
 medium: ""
 description: ""
 image: "./baby-elephant.jpg"

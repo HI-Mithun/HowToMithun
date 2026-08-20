@@ -1,6 +1,6 @@
 ---
 title: "Frog Cat Duck"
-date: 2026-08-19
+date: 2024-10-08
 medium: ""
 description: ""
 image: "./frog-cat-duck.jpg"

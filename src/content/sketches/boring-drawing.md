@@ -1,6 +1,6 @@
 ---
 title: "Boring Drawing"
-date: 2026-08-19
+date: 2023-09-12
 medium: ""
 description: ""
 image: "./boring-drawing.jpg"

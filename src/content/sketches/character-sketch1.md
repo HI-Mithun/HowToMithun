@@ -1,6 +1,6 @@
 ---
 title: "Character Sketch"
-date: 2026-08-19
+date: 2019-06-26
 medium: ""
 description: ""
 image: "./character-sketch1.jpg"

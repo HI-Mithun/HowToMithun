@@ -1,6 +1,6 @@
 ---
 title: "Gopal Bhar"
-date: 2026-08-19
+date: 2019-06-06
 medium: ""
 description: ""
 image: "./gopal-bhar.jpg"

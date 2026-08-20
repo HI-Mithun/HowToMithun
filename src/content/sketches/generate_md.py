@@ -6,11 +6,12 @@ from PIL import Image
 from PIL.ExifTags import TAGS
 
 
-# Folder containing the images and Markdown files
+# =========================================================
+# SETTINGS
+# =========================================================
+
 FOLDER = Path("C:\\Users\\himit\\HowToMithun\\src\\content\\sketches")
 
-
-# Image extensions to look for
 IMAGE_EXTENSIONS = {
     ".jpg",
     ".jpeg",
@@ -23,48 +24,114 @@ IMAGE_EXTENSIONS = {
 }
 
 
+# EXIF fields, in order of preference
+EXIF_DATE_FIELDS = [
+    "DateTimeOriginal",
+    "DateTimeDigitized",
+    "DateTime",
+]
+
+
+# =========================================================
+# EXIF DATE
+# =========================================================
+
 def get_exif_date(image_path):
     """
-    Get the original date from EXIF DateTimeOriginal.
+    Look for the actual image date in EXIF metadata.
+
+    Priority:
+        1. DateTimeOriginal
+        2. DateTimeDigitized
+        3. DateTime
 
     Returns:
-        YYYY-MM-DD
-        or None if unavailable.
+        (date, source)
+
+    Example:
+        ("2024-05-10", "EXIF DateTimeOriginal")
+
+    If no EXIF date is found:
+        (None, None)
     """
 
     try:
         with Image.open(image_path) as img:
+
             exif = img.getexif()
 
             if not exif:
-                return None
+                return None, None
+
+            # Convert EXIF IDs into readable names
+            exif_data = {}
 
             for tag_id, value in exif.items():
 
-                tag_name = TAGS.get(tag_id, tag_id)
+                tag_name = TAGS.get(
+                    tag_id,
+                    tag_id
+                )
 
-                if tag_name == "DateTimeOriginal":
+                exif_data[tag_name] = value
+
+            # Check each date field
+            for field in EXIF_DATE_FIELDS:
+
+                if field not in exif_data:
+                    continue
+
+                value = exif_data[field]
+
+                if not value:
+                    continue
+
+                value = str(value).strip()
+
+                # Common EXIF date formats
+                date_formats = [
+                    "%Y:%m:%d %H:%M:%S",
+                    "%Y-%m-%d %H:%M:%S",
+                    "%Y:%m:%d",
+                    "%Y-%m-%d",
+                ]
+
+                for date_format in date_formats:
 
                     try:
+
                         date = datetime.strptime(
-                            str(value),
-                            "%Y:%m:%d %H:%M:%S"
+                            value,
+                            date_format
                         )
 
-                        return date.strftime("%Y-%m-%d")
+                        return (
+                            date.strftime("%Y-%m-%d"),
+                            f"EXIF {field}"
+                        )
 
                     except ValueError:
-                        return None
+                        continue
 
     except Exception as e:
-        print(f"  Could not read EXIF: {e}")
 
-    return None
+        print(
+            f"  WARNING: Could not read EXIF "
+            f"from {image_path.name}: {e}"
+        )
 
+    return None, None
+
+
+# =========================================================
+# WINDOWS CREATION DATE
+# =========================================================
 
 def get_creation_date(image_path):
     """
-    Get the Windows file creation date.
+    Get Windows file creation date.
+
+    This is ONLY used if no EXIF date is available.
     """
 
     timestamp = image_path.stat().st_ctime
@@ -74,108 +141,233 @@ def get_creation_date(image_path):
     ).strftime("%Y-%m-%d")
 
 
-def get_date(image_path):
+# =========================================================
+# BEST DATE
+# =========================================================
+
+def get_best_date(image_path):
     """
-    Date priority:
+    Get the best available date.
 
-    1. EXIF DateTimeOriginal
-    2. Windows file creation date
-    """
+    Priority:
 
-    exif_date = get_exif_date(image_path)
-
-    if exif_date:
-        return exif_date, "EXIF"
-
-    return get_creation_date(image_path), "file creation date"
-
-
-def date_is_empty(content):
-    """
-    Check whether the Markdown file contains:
-
-        date: ""
-
-    or
-
-        date: ''
-
-    or an empty date field.
+        EXIF DateTimeOriginal
+            ↓
+        EXIF DateTimeDigitized
+            ↓
+        EXIF DateTime
+            ↓
+        Windows creation date
     """
 
-    match = re.search(
-        r'^date:\s*(.*?)\s*$',
-        content,
-        re.MULTILINE
+    date, source = get_exif_date(
+        image_path
     )
 
-    # No date field found
-    if not match:
-        return False
+    if date:
 
-    value = match.group(1).strip()
+        return date, source
 
-    # Remove quotes
-    value = value.strip('"').strip("'")
+    # No useful EXIF metadata
+    date = get_creation_date(
+        image_path
+    )
 
-    return value == ""
+    return (
+        date,
+        "Windows file creation date"
+    )
 
+
+# =========================================================
+# FIND MATCHING IMAGE
+# =========================================================
+
+def find_matching_image(md_file):
+    """
+    Find the image with the same base filename.
+
+    Example:
+
+        arabic-calligraphy.md
+
+    matches:
+
+        arabic-calligraphy.jpg
+        arabic-calligraphy.png
+        arabic-calligraphy.webp
+    """
+
+    for extension in IMAGE_EXTENSIONS:
+
+        image = md_file.with_suffix(
+            extension
+        )
+
+        if image.exists():
+
+            return image
+
+    return None
+
+
+# =========================================================
+# UPDATE DATE
+# =========================================================
 
 def update_date(content, date):
     """
-    Replace the existing date field with the new date.
+    Replace the existing date field.
+
+    This modifies ONLY:
+
+        date: ...
+
+    Everything else remains untouched.
     """
 
+    pattern = r"^date:\s*.*$"
+
+    # Existing date field
+    if re.search(
+        pattern,
+        content,
+        re.MULTILINE
+    ):
+
+        return re.sub(
+            pattern,
+            f"date: {date}",
+            content,
+            count=1,
+            flags=re.MULTILINE
+        )
+
+    # If somehow the .md doesn't have a date field,
+    # add it after the opening ---
     return re.sub(
-        r'^date:\s*.*$',
-        f'date: {date}',
+        r"^---\s*$",
+        f"---\ndate: {date}",
         content,
         count=1,
         flags=re.MULTILINE
     )
 
 
-# ---------------------------------------------------------
-# PROCESS FILES
-# ---------------------------------------------------------
+# =========================================================
+# MAIN
+# =========================================================
 
-for md_file in FOLDER.glob("*.md"):
+updated = 0
+already_correct = 0
+missing_md = 0
+missing_image = 0
+creation_fallback = 0
+
+
+# Loop through IMAGES, not Markdown files
+for image in FOLDER.iterdir():
+
+    # Ignore directories
+    if not image.is_file():
+        continue
+
+    # Ignore non-images
+    if image.suffix.lower() not in IMAGE_EXTENSIONS:
+        continue
+
+    # Find corresponding Markdown file
+    md_file = image.with_suffix(".md")
+
+    # -----------------------------------------------------
+    # NO MARKDOWN FILE
+    # -----------------------------------------------------
+
+    if not md_file.exists():
+
+        print(
+            f"SKIPPED: {image.name} "
+            f"→ matching .md not found"
+        )
+
+        missing_md += 1
+
+        continue
+
+    # -----------------------------------------------------
+    # GET IMAGE DATE
+    # -----------------------------------------------------
+
+    date, source = get_best_date(
+        image
+    )
+
+    # -----------------------------------------------------
+    # WARNING FOR FALLBACK
+    # -----------------------------------------------------
+
+    if source == "Windows file creation date":
+
+        print(
+            f"WARNING: {image.name} "
+            f"→ {date} "
+            f"(NO EXIF DATE)"
+        )
+
+        creation_fallback += 1
+
+    else:
+
+        print(
+            f"FOUND: {image.name} "
+            f"→ {date} ({source})"
+        )
+
+    # -----------------------------------------------------
+    # READ MARKDOWN
+    # -----------------------------------------------------
 
     content = md_file.read_text(
         encoding="utf-8"
     )
 
-    # Only modify files where date is empty
-    if not date_is_empty(content):
-        print(
-            f"SKIPPED: {md_file.name} "
-            f"→ date already exists"
+    # Get current date, if present
+    match = re.search(
+        r"^date:\s*(.*?)\s*$",
+        content,
+        re.MULTILINE
+    )
+
+    current_date = None
+
+    if match:
+
+        current_date = (
+            match.group(1)
+            .strip()
+            .strip('"')
+            .strip("'")
         )
+
+    # -----------------------------------------------------
+    # NO CHANGE NEEDED
+    # -----------------------------------------------------
+
+    if current_date == date:
+
+        print(
+            f"  → Already correct: "
+            f"{md_file.name}"
+        )
+
+        already_correct += 1
+
         continue
 
-    # Find corresponding image
-    image = None
+    # -----------------------------------------------------
+    # UPDATE DATE
+    # -----------------------------------------------------
 
-    for extension in IMAGE_EXTENSIONS:
-
-        possible_image = md_file.with_suffix(extension)
-
-        if possible_image.exists():
-            image = possible_image
-            break
-
-    # No corresponding image
-    if image is None:
-        print(
-            f"SKIPPED: {md_file.name} "
-            f"→ corresponding image not found"
-        )
-        continue
-
-    # Get date
-    date, source = get_date(image)
-
-    # Update ONLY the date
     updated_content = update_date(
         content,
         date
@@ -187,9 +379,25 @@ for md_file in FOLDER.glob("*.md"):
     )
 
     print(
-        f"UPDATED: {md_file.name} "
-        f"→ {date} ({source})"
+        f"  → UPDATED: {md_file.name} "
+        f"{current_date} → {date}"
     )
 
+    updated += 1
 
-print("\nDone!")
+
+# =========================================================
+# SUMMARY
+# =========================================================
+
+print()
+print("=" * 65)
+print("DATE UPDATE COMPLETE")
+print("=" * 65)
+
+print(f"Dates updated:                 {updated}")
+print(f"Dates already correct:        {already_correct}")
+print(f"Images without matching .md:  {missing_md}")
+print(f"Used Windows creation date:    {creation_fallback}")
+
+print("=" * 65)

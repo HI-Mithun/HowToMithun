@@ -1,6 +1,6 @@
 ---
 title: "Random Character"
-date: 2026-08-19
+date: 2021-10-08
 medium: ""
 description: ""
 image: "./random-character.jpg"

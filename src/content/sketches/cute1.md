@@ -1,6 +1,6 @@
 ---
 title: "Cute"
-date: 2026-08-19
+date: 2023-12-20
 medium: ""
 description: ""
 image: "./cute1.jpg"

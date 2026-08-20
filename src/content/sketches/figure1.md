@@ -1,6 +1,6 @@
 ---
 title: "Figure"
-date: 2026-08-19
+date: 2023-08-05
 medium: ""
 description: ""
 image: "./figure1.jpg"

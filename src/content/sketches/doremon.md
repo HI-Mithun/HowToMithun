@@ -1,6 +1,6 @@
 ---
 title: "Doremon"
-date: 2026-08-19
+date: 2019-06-25
 medium: ""
 description: ""
 image: "./doremon.jpg"

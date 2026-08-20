@@ -1,6 +1,6 @@
 ---
 title: "Weird Drawing"
-date: 2026-08-19
+date: 2023-12-21
 medium: ""
 description: ""
 image: "./weird-drawing.jpg"

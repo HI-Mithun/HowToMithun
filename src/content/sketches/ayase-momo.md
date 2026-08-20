@@ -1,6 +1,6 @@
 ---
 title: "Ayase Momo"
-date: 2026-08-19
+date: 2025-01-08
 medium: ""
 description: ""
 image: "./ayase-momo.jpg"

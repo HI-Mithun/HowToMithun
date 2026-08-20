@@ -1,6 +1,6 @@
 ---
 title: "Hulk"
-date: 2026-08-19
+date: 2019-05-03
 medium: ""
 description: ""
 image: "./hulk1.jpg"

@@ -1,6 +1,6 @@
 ---
 title: "Begger"
-date: 2026-08-19
+date: 2019-04-16
 medium: ""
 description: ""
 image: "./begger.jpg"

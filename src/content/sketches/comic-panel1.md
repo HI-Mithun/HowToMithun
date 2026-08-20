@@ -1,6 +1,6 @@
 ---
 title: "Comic Panel"
-date: 2026-08-19
+date: 2019-08-21
 medium: ""
 description: ""
 image: "./comic-panel1.jpg"

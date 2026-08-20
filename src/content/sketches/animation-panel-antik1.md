@@ -1,6 +1,6 @@
 ---
 title: "Comic Panel"
-date: 2019-08-19
+date: 2019-08-21
 medium: "Pen on Paper"
 description: "I took this from one of Antik Mahmud's video"
 image: "./animation-panel-antik1.jpg"

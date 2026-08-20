@@ -1,6 +1,6 @@
 ---
 title: "Robot"
-date: 2026-08-19
+date: 2024-10-08
 medium: ""
 description: ""
 image: "./robot1.jpg"

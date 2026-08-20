@@ -1,6 +1,6 @@
 ---
 title: "Horror"
-date: 2026-08-19
+date: 2024-09-11
 medium: ""
 description: ""
 image: "./horror1.jpg"

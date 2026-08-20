@@ -1,6 +1,6 @@
 ---
 title: "Donuld Duck"
-date: 2026-08-19
+date: 2019-06-12
 medium: ""
 description: ""
 image: "./donuld-duck.jpg"

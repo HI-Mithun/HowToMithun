@@ -1,6 +1,6 @@
 ---
 title: "Gopal Var"
-date: 2026-08-19
+date: 2020-12-28
 medium: ""
 description: ""
 image: "./gopal-var.jpg"
