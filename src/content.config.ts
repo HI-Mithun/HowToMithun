@@ -1,6 +1,8 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
+const emptyToUndefined = (v: unknown) => (v === '' ? undefined : v);
+
 const blogCollection = defineCollection({
 	loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
 	schema: z.object({
@@ -13,10 +15,10 @@ const blogCollection = defineCollection({
 		category: z.string().default('Uncategorized'),
 		featuredImage: z.string().optional(),
 		draft: z.boolean().default(false),
+		artist: z.preprocess(emptyToUndefined, z.string().optional()),
+		note: z.preprocess(emptyToUndefined, z.string().optional()),
 	}),
 });
-
-const emptyToUndefined = (v: unknown) => (v === '' ? undefined : v);
 
 const sketchesCollection = defineCollection({
 	loader: glob({ pattern: '**/*.md', base: './src/content/sketches' }),
@@ -29,6 +31,9 @@ const sketchesCollection = defineCollection({
 			image: image(),
 			category: z.string().optional(),
 			tags: z.array(z.string()).default([]),
+			artist: z.preprocess(emptyToUndefined, z.string().optional()),
+			source: z.preprocess(emptyToUndefined, z.string().optional()),
+			note: z.preprocess(emptyToUndefined, z.string().optional()),
 		}),
 });
 

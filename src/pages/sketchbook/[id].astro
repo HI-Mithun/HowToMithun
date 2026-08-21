@@ -4,6 +4,7 @@ import { Image, getImage } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getRelatedSketches } from '../../utils/relatedSketches';
 import { titleFromId } from '../../utils/formatTitle';
+import { joinMeta } from '../../utils/joinMeta';
 
 export async function getStaticPaths() {
 	const sketches = await getCollection('sketches');
@@ -14,7 +15,8 @@ export async function getStaticPaths() {
 }
 
 const { sketch, allSketches } = Astro.props;
-const { date, medium, description, image } = sketch.data;
+// const { date, medium, description, image } = sketch.data;
+const { date, medium, description, image, artist, source, note } = sketch.data;
 const title = sketch.data.title ?? titleFromId(sketch.id);
 const related = getRelatedSketches(sketch, allSketches, allSketches.length);
 const downloadImage = await getImage({ src: image, format: 'jpg', quality: 90 });
@@ -22,6 +24,7 @@ const downloadImage = await getImage({ src: image, format: 'jpg', quality: 90 })
 const formattedDate = date
 	? date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
 	: null;
+const metaLine = joinMeta([formattedDate, medium, artist && `Art by ${artist}`]);
 ---
 
 <BaseLayout title={`${title} | Sketchbook | How To Mithun`} description={description ?? title}>
@@ -40,9 +43,9 @@ const formattedDate = date
 				/>
 
 				<h1 class="text-2xl font-bold mb-2">{title}</h1>
-				{(formattedDate || medium) && (
+				{metaLine && (
 					<p class="text-sm text-text-muted dark:text-text-muted-dark mb-4">
-						{formattedDate}{formattedDate && medium && ' · '}{medium}
+						{metaLine}
 					</p>
 				)}
 
@@ -50,6 +53,22 @@ const formattedDate = date
 					<p class="text-text-muted dark:text-text-muted-dark leading-relaxed mb-6">
 						{description}
 					</p>
+				)}
+				{note && (
+					<p class="italic text-sm text-text-muted dark:text-text-muted-dark mb-6">
+						{note}
+					</p>
+				)}
+
+				{source && (
+					<a
+						href={source}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="block text-sm text-accent dark:text-accent-dark hover:underline mb-4"
+					>
+						Source ↗
+					</a>
 				)}
 				<a
 				

@@ -44,13 +44,25 @@ const related = getRelatedPosts(post, allPosts);
 			<br>
 			By {post.data.author}
 		</p>
+		{post.data.note && (
+			<p class="italic text-sm text-text-muted dark:text-text-muted-dark mb-8">
+				{post.data.note}
+			</p>
+		)}
 		{post.data.featuredImage && (
-	<img
-		src={post.data.featuredImage}
-		alt={post.data.title}
-		class="w-full rounded-lg mb-8"
-	/>
-)}
+			<figure class="mb-8">
+				<img
+					src={post.data.featuredImage}
+					alt={post.data.title}
+					class="w-full rounded-lg"
+				/>
+				{post.data.artist && (
+					<figcaption class="text-xs text-text-muted dark:text-text-muted-dark mt-2">
+						Image by {post.data.artist}
+					</figcaption>
+				)}
+			</figure>
+		)}
 
 		<div class="prose prose-gray max-w-none">
 			<Content />
